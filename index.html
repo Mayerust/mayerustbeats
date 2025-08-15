@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-nintendoBg min-h-screen text-white font-pixel scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mayerustbeats | Retro Beat Portfolio</title>
+  <meta name="description" content="Mayerust's retro Nintendo-style beat selling portfolio. Play, discover, and purchase exclusive beats with a nostalgic GameBoy aesthetic.">
+  <meta name="keywords" content="beats, music, producer, Mayerust, retro, nintendo, synthwave">
+  <meta name="author" content="Mayerust">
+  
+ 
+  <meta property="og:title" content="mayerustbeats | Retro Beat Portfolio">
+  <meta property="og:description" content="Discover exclusive beats with a retro Nintendo aesthetic">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mayerustbeats.vercel.app">
+  
+  
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  
+
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  
+  
+  <link rel="stylesheet" href="dist/output.css">
+  <link rel="stylesheet" href="css/styles.css">
+  
+  
+  <style>
+    body {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
+    }
+    
+    
+    body::-webkit-scrollbar { display: none; }
+    body { -ms-overflow-style: none; scrollbar-width: none; }
+    
+   
+    audio { 
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      pointer-events: none;
+    }
+    
+   
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0f0f0f;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    .loading-text {
+      animation: pulse 1.5s infinite;
+      color: #00ffff;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body class="relative overflow-hidden bg-nintendoBg min-h-screen flex items-center justify-center">
+
+ 
+  <div id="loadingScreen" class="loading-screen">
+    <div class="w-20 h-20 border-4 border-beatCyan border-t-transparent rounded-full animate-spin"></div>
+    <div class="loading-text text-sm mt-4">LOADING BEATS...</div>
+  </div>
+
+  
+  <div class="fixed inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(circle at 50% 50%, #ff4dff 1px, transparent 1px); background-size: 30px 30px;"></div>
+
+  
+  <div class="absolute top-3 left-3 xs:top-4 xs:left-4 z-30 select-none">
+    <div class="relative">
+      <img src="assets/profile.jpg" 
+           alt="Mayerust Profile" 
+           class="w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 
+                  object-cover rounded-lg border-2 xs:border-3 sm:border-4 
+                  border-beatCyan shadow-nintendo animate-float 
+                  hover:shadow-nintendoHover hover:border-beatPink
+                  transition-all duration-300 cursor-pointer pixel-perfect" />
+      
+      
+      <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-beatCyan to-transparent opacity-20 animate-scanline rounded-lg"></div>
+      
+      
+      <div class="absolute -bottom-2 -right-2 bg-beatPink text-nintendoBg px-2 py-1 rounded text-xs font-bold border border-beatCyan">
+        MAYERUST
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="absolute top-3 right-3 xs:top-4 xs:right-4 z-30 select-none">
+    <div class="bg-nintendoBg bg-opacity-80 border-2 border-beatGreen rounded-lg px-3 py-2 text-xs">
+      <span id="beatCounter" class="text-beatGreen">1/11</span>
+    </div>
+  </div>
+
+  
+  <button id="prevBeat"
+    class="absolute left-2 xs:left-4 top-1/2 transform -translate-y-1/2 z-20 
+           bg-nintendoBg bg-opacity-90 border-3 xs:border-4 border-beatPink 
+           shadow-nintendo rounded-full p-3 xs:p-4 
+           hover:bg-beatPink hover:text-nintendoBg hover:shadow-nintendoHover
+           transition-all duration-200 ease-in-out 
+           active:scale-90 active:animate-glitch
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-nintendoBg
+           text-sm xs:text-base font-bold select-none pixel-perfect"
+    aria-label="Previous Beat"
+    disabled>
+    ◀
+  </button>
+
+  
+  <button id="nextBeat"
+    class="absolute right-2 xs:right-4 top-1/2 transform -translate-y-1/2 z-20 
+           bg-nintendoBg bg-opacity-90 border-3 xs:border-4 border-beatCyan 
+           shadow-nintendo rounded-full p-3 xs:p-4 
+           hover:bg-beatCyan hover:text-nintendoBg hover:shadow-nintendoHover
+           transition-all duration-200 ease-in-out 
+           active:scale-90 active:animate-glitch
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-nintendoBg
+           text-sm xs:text-base font-bold select-none pixel-perfect"
+    aria-label="Next Beat">
+    ▶
+  </button>
+
+  
+  <div id="playcard" 
+    class="w-[90vw] xs:w-[350px] sm:w-[380px] md:w-[420px] lg:w-[450px]
+           max-w-md bg-nintendoBg bg-opacity-95 
+           rounded-xl border-3 xs:border-4 border-beatCyan 
+           mx-auto z-30 shadow-nintendo
+           flex flex-col items-center text-center 
+           p-3 xs:p-4 sm:p-6
+           transition-all duration-500 animate-cardIn
+           hover:shadow-nintendoHover hover:border-beatPink
+           backdrop-blur-sm pixel-perfect">
+
+    
+    <div class="relative mb-3 xs:mb-4">
+      <img id="beatArtwork" 
+           class="w-40 h-40 xs:w-48 xs:h-48 sm:w-56 sm:h-56 md:w-64 md:h-64
+                  object-cover border-2 xs:border-3 border-beatGreen 
+                  rounded-lg mb-2 transition-all duration-300
+                  hover:border-beatPink hover:shadow-pixelGlow pixel-perfect" 
+           src="assets/beats/placeholder.jpg" 
+           alt="Beat Artwork" />
+      
+     
+      <div class="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black opacity-20 rounded-lg pointer-events-none"></div>
+    </div>
+
+    
+    <div class="w-full mb-3 xs:mb-4">
+      <h2 id="beatTitle" class="text-base xs:text-lg sm:text-xl text-beatPink mb-2 font-bold leading-tight">
+        LOADING...
+      </h2>
+      <p id="beatInfo" class="text-beatGreen text-xs xs:text-sm font-medium">
+        BPM: -- | KEY: --
+      </p>
+    </div>
+
+    
+    <div class="w-full flex justify-between items-center mb-3 xs:mb-4 px-2">
+      <span id="beatPrice" class="text-beatCyan text-lg xs:text-xl sm:text-2xl font-bold">
+        ₹---
+      </span>
+      <span id="beatDuration" class="text-white text-xs xs:text-sm">
+        00:00 / 00:00
+      </span>
+    </div>
+
+    
+    <div class="flex items-center w-full px-2 space-x-3 xs:space-x-4 mb-4">
+      
+      <button id="playPauseBtn" 
+        class="bg-beatPink hover:bg-beatCyan text-nintendoBg 
+               p-2 xs:p-3 rounded-lg transition-all duration-200 
+               shadow-pixelGlow hover:shadow-cyanGlow
+               active:scale-95 font-bold text-sm xs:text-base
+               w-12 xs:w-14 h-12 xs:h-14 flex items-center justify-center
+               border-2 border-transparent hover:border-white pixel-perfect">
+        ►
+      </button>
+      
+      
+      <div class="flex-1 relative">
+        <input id="durationSlider" 
+               type="range" 
+               min="0" 
+               max="100" 
+               value="0" 
+               aria-label="Beat progress"
+               class="w-full h-2 xs:h-3 rounded-lg appearance-none bg-beatCyan bg-opacity-40 
+                      cursor-pointer transition-all duration-200
+                      hover:bg-opacity-60 slider-thumb pixel-perfect" 
+               style="background: linear-gradient(to right, #ff4dff 0%, #00ffff 100%);" />
+      </div>
+    </div>
+
+    
+    <button id="purchaseBtn"
+      class="w-full bg-beatGreen hover:bg-beatCyan text-nintendoBg 
+             py-2 xs:py-3 px-4 xs:px-6 rounded-lg font-bold 
+             text-sm xs:text-base transition-all duration-200
+             shadow-pixelGlow hover:shadow-cyanGlow
+             active:scale-98 border-2 border-transparent 
+             hover:border-white pixel-perfect">
+      🛒 PURCHASE BEAT
+    </button>
+  </div>
+
+  
+  <a href="https://www.youtube.com/@MayerustBeats" 
+     target="_blank" 
+     rel="noopener"
+     id="hearMoreBtn"
+     class="hidden fixed bottom-4 xs:bottom-6 left-1/2 transform -translate-x-1/2 
+            bg-beatPink text-nintendoBg border-3 xs:border-4 border-beatCyan 
+            rounded-xl px-4 xs:px-8 py-2 xs:py-3 
+            font-bold text-sm xs:text-base sm:text-lg 
+            shadow-nintendo animate-pulse z-40
+            hover:bg-beatCyan hover:text-beatPink hover:border-beatPink
+            transition-all duration-300 active:scale-95 pixel-perfect">
+    ▶ HEAR MORE BEATS
+  </a>
+
+  
+  <audio id="audioPlayer" preload="none" style="display: none;"></audio>
+
+  
+  <script src="js/beats.js"></script>
+
+  
+  <script>
+    
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    
+    
+    document.addEventListener('keydown', e => {
+      if (e.key === 'F12' || 
+          (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+          (e.ctrlKey && e.key === 'u')) {
+        e.preventDefault();
+      }
+    });
+
+    
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+          loadingScreen.style.opacity = '0';
+          setTimeout(() => {
+            loadingScreen.style.display = 'none';
+          }, 500);
+        }
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
