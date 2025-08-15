@@ -1,13 +1,13 @@
 {
   "version": 2,
-
-  "rewrites": [
+  "buildCommand": "npm run build-prod",
+  "outputDirectory": "./",
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ],
-
   "headers": [
     {
       "source": "/(.*)",
@@ -17,7 +17,7 @@
           "value": "nosniff"
         },
         {
-          "key": "X-Frame-Options",
+          "key": "X-Frame-Options", 
           "value": "DENY"
         },
         {
@@ -47,7 +47,7 @@
       "source": "/(.*\\.(js|css|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot))",
       "headers": [
         {
-          "key": "Cache-Control",
+          "key": "Cache-Control", 
           "value": "public, max-age=31536000, immutable"
         }
       ]
